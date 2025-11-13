@@ -1,2 +1,1 @@
-# apeczkamoja1
-digoigiutf8
+Aplikacja nie Generuje Prawdziwych dowodów osobistych i jest wyłącznie przeznaczona do użytku osobistego.
