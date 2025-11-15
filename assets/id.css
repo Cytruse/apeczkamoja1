@@ -235,3 +235,12 @@ html, body {
     width: max-content;
     margin-left: auto;
 }
+#reset-screen .forgot_password {
+    color: #ffffff !important;
+}
+.reset-title {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+
