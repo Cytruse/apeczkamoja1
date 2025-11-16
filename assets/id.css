@@ -267,6 +267,11 @@ html, body {
     color: #aaaaaa;
     text-align: center;
 }
+.bottom {
+    position: relative;
+    width: 100%;
+}
+
 
 
 
