@@ -26,6 +26,8 @@ input::-webkit-inner-spin-button {
     --font2: black;
     --background: #111218;
     --background2: #1f2326;
+    --top-bar-height: 52px;
+    --top-bar-blur: 40px;
 }
 
 body{
@@ -241,47 +243,59 @@ p, input{
     margin-right: 0px;
     margin-left: auto;
 }
-:root {
-    --top-bar-height: 56px;
-}
 
-.top_grid,
-.top_slide_bar {
+
+/* TOP BAR – TYLKO POZA EKRANEM LOGOWANIA (body.login-screen) */
+
+body:not(.login-screen) .top_grid,
+body:not(.login-screen) .top_slide_bar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 9999;
+
+    /* miejsce na dynamic island / notch */
     padding-top: env(safe-area-inset-top);
     height: calc(var(--top-bar-height) + env(safe-area-inset-top));
+
     display: flex;
-    align-items: flex-end;
+    align-items: flex-end;      /* tekst przy dolnej krawędzi paska */
+    justify-content: center;    /* np. tytuł "mDowód" na środku */
 
-    background: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background: linear-gradient(
+        90deg,
+        rgba(70, 76, 86, 0.88),
+        rgba(92, 101, 113, 0.88)
+    );
+    backdrop-filter: blur(var(--top-bar-blur));
+    -webkit-backdrop-filter: blur(var(--top-bar-blur));
 
-    transform: translateZ(0);
-    transition:
-        background 0.25s ease,
-        backdrop-filter 0.25s ease,
-        -webkit-backdrop-filter 0.25s ease,
-        opacity 0.2s ease;
-}
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.04),
+        0 10px 25px rgba(0, 0, 0, 0.35);
 
-.top-bar--hidden {
+    transform: translateY(-100%);  /* start: schowany nad ekranem */
     opacity: 0;
     pointer-events: none;
+
+    transition:
+        transform 0.22s ease-out,
+        opacity 0.18s ease-out,
+        background 0.25s ease,
+        backdrop-filter 0.25s ease,
+        -webkit-backdrop-filter 0.25s ease;
 }
 
-.top-bar--active {
+/* stan aktywny – wjeżdża z góry */
+body:not(.login-screen) .top-bar--active {
+    transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
 }
 
-.body-with-top-bar {
+/* odsuwamy content w dół kiedy pasek jest widoczny */
+body:not(.login-screen).body-with-top-bar {
     padding-top: calc(var(--top-bar-height) + env(safe-area-inset-top));
 }
+

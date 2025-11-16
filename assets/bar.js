@@ -59,27 +59,23 @@ function initTopBarEffects() {
 
     if (!bar) return;
 
-    const TOP_OFFSET = 10; // od ilu px scrolla ma się pojawić pasek
+    const SHOW_OFFSET = 8;              // od ilu px scrolla pasek ma się pojawić
     const BODY_PADDING_CLASS = "body-with-top-bar";
 
-    // stan początkowy
-    bar.classList.add("top-bar--hidden");
-
     function updateTopBar() {
-        if (window.scrollY > TOP_OFFSET) {
-            bar.classList.remove("top-bar--hidden");
+        if (window.scrollY > SHOW_OFFSET) {
             bar.classList.add("top-bar--active");
             document.body.classList.add(BODY_PADDING_CLASS);
         } else {
-            bar.classList.add("top-bar--hidden");
             bar.classList.remove("top-bar--active");
             document.body.classList.remove(BODY_PADDING_CLASS);
         }
     }
 
     window.addEventListener("scroll", updateTopBar, { passive: true });
-    updateTopBar(); // wywołanie na starcie
+    updateTopBar();
 }
 
 document.addEventListener("DOMContentLoaded", initTopBarEffects);
+
 
