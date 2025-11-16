@@ -247,14 +247,16 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+
+    position: absolute;
+    bottom: 25px;    /* odległość od dołu */
+    left: 0;
 }
 
 .bottom-logos {
-    width: 220px;
+    width: 300px;    /* wielkość logotypów */
     height: auto;
-    opacity: 0.85;
+    opacity: 0.9;
     display: block;
     margin: 0 auto;
 }
@@ -265,6 +267,7 @@ html, body {
     color: #aaaaaa;
     text-align: center;
 }
+
 
 
 
