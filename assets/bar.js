@@ -49,7 +49,7 @@ if (getMobileOperatingSystem() == 2){
 
 
 // -------------------------
-//  🔥 MOCNY TOP BAR BLUR — JAK W MOBYWATEL
+//  🔥 TOP BAR BLUR JAK W MOBYWATEL
 // -------------------------
 
 function initTopBarEffects() {
@@ -59,35 +59,27 @@ function initTopBarEffects() {
 
     if (!bar) return;
 
-    // Ustawienia globalne paska
-    bar.style.position = "fixed";
-    bar.style.top = "env(safe-area-inset-top)";
-    bar.style.left = "0";
-    bar.style.right = "0";
-    bar.style.zIndex = "9999";
-    bar.style.padding = "8px 0";
+    const TOP_OFFSET = 10; // od ilu px scrolla ma się pojawić pasek
+    const BODY_PADDING_CLASS = "body-with-top-bar";
 
-    // Mocny efekt szkła
-    bar.style.background = "rgba(0,0,0,0.25)";
-    bar.style.backdropFilter = "blur(35px)";
-    bar.style.webkitBackdropFilter = "blur(35px)";
-    bar.style.transform = "translateZ(0)";
+    // stan początkowy
+    bar.classList.add("top-bar--hidden");
 
-    bar.style.transition =
-        "background 0.25s ease, backdrop-filter 0.25s ease";
-
-    // Reakcja na scroll
-    window.addEventListener("scroll", () => {
-        if (window.scrollY > 20) {
-            bar.style.background = "rgba(0,0,0,0.55)";
-            bar.style.backdropFilter = "blur(45px)";
-            bar.style.webkitBackdropFilter = "blur(45px)";
+    function updateTopBar() {
+        if (window.scrollY > TOP_OFFSET) {
+            bar.classList.remove("top-bar--hidden");
+            bar.classList.add("top-bar--active");
+            document.body.classList.add(BODY_PADDING_CLASS);
         } else {
-            bar.style.background = "rgba(0,0,0,0.25)";
-            bar.style.backdropFilter = "blur(35px)";
-            bar.style.webkitBackdropFilter = "blur(35px)";
+            bar.classList.add("top-bar--hidden");
+            bar.classList.remove("top-bar--active");
+            document.body.classList.remove(BODY_PADDING_CLASS);
         }
-    });
+    }
+
+    window.addEventListener("scroll", updateTopBar, { passive: true });
+    updateTopBar(); // wywołanie na starcie
 }
 
 document.addEventListener("DOMContentLoaded", initTopBarEffects);
+
