@@ -53,30 +53,37 @@ if (getMobileOperatingSystem() == 2){
 // -------------------------
 
 function initTopBarEffects() {
-    const bar = document.querySelector(".top_grid");
+    const bar =
+        document.querySelector(".top_grid") ||
+        document.querySelector(".top_slide_bar");
+
     if (!bar) return;
 
-    bar.style.position = "sticky";
-    bar.style.top = "0";
-    bar.style.zIndex = "999";
-    bar.style.width = "100%";
+    // Ustawienia globalne paska
+    bar.style.position = "fixed";
+    bar.style.top = "env(safe-area-inset-top)";
+    bar.style.left = "0";
+    bar.style.right = "0";
+    bar.style.zIndex = "9999";
     bar.style.padding = "8px 0";
 
-    // MOCNY efekt początkowy
-    bar.style.background = "rgba(0,0,0,0.30)";
+    // Mocny efekt szkła
+    bar.style.background = "rgba(0,0,0,0.25)";
     bar.style.backdropFilter = "blur(35px)";
     bar.style.webkitBackdropFilter = "blur(35px)";
+    bar.style.transform = "translateZ(0)";
 
-    bar.style.transition = "background 0.25s ease, backdrop-filter 0.25s ease";
+    bar.style.transition =
+        "background 0.25s ease, backdrop-filter 0.25s ease";
 
+    // Reakcja na scroll
     window.addEventListener("scroll", () => {
-        if (window.scrollY > 10) {
-            // Jeszcze mocniejszy efekt po scrollu
+        if (window.scrollY > 20) {
             bar.style.background = "rgba(0,0,0,0.55)";
             bar.style.backdropFilter = "blur(45px)";
             bar.style.webkitBackdropFilter = "blur(45px)";
         } else {
-            bar.style.background = "rgba(0,0,0,0.30)";
+            bar.style.background = "rgba(0,0,0,0.25)";
             bar.style.backdropFilter = "blur(35px)";
             bar.style.webkitBackdropFilter = "blur(35px)";
         }
