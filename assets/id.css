@@ -272,6 +272,11 @@ html, body {
     width: 100%;
     min-height: 570px; /* możesz zwiększyć na 200–240 jeśli potrzeba */
 }
+.bottom .login {
+    margin-top: 430px; /* dostosuj wartość */
+    margin-bottom: 20px;
+    text-align: center;
+}
 
 
 
