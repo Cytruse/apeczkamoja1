@@ -270,7 +270,7 @@ html, body {
 .bottom {
     position: relative;
     width: 100%;
-    min-height: 240px; /* możesz zwiększyć na 200–240 jeśli potrzeba */
+    min-height: 570px; /* możesz zwiększyć na 200–240 jeśli potrzeba */
 }
 
 
