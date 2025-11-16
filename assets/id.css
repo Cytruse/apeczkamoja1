@@ -273,7 +273,7 @@ html, body {
     min-height: 570px; /* możesz zwiększyć na 200–240 jeśli potrzeba */
 }
 .bottom .login {
-    margin-top: 360px; /* dostosuj wartość */
+    margin-top: 380px; /* dostosuj wartość */
     margin-bottom: 20px;
     text-align: center;
 }
