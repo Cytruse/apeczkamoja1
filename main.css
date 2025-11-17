@@ -26,12 +26,17 @@ input::-webkit-inner-spin-button {
     --font2: black;
     --background: #111218;
     --background2: #1f2326;
+    --top-bar-collapsed-offset: 28px;
 }
 
 body{
     background-color: #111218;
     padding-top: env(safe-area-inset-top);
     padding-bottom: calc(110px + env(safe-area-inset-bottom));
+}
+
+body.has-blur-topbar{
+    padding-top: calc(env(safe-area-inset-top) + var(--top-bar-collapsed-offset));
 }
 
 p, input{
@@ -256,31 +261,36 @@ p, input{
     right: 0;
     z-index: 9999;
 
-    /* miejsce na dynamic island / notch */
     padding-top: env(safe-area-inset-top);
     height: calc(var(--top-bar-height) + env(safe-area-inset-top));
 
     display: flex;
-    align-items: flex-end;      /* tekst siedzi przy dolnej krawędzi paska */
-    justify-content: center;    /* tytuł na środku jak "mDowód" */
+    align-items: flex-end;
+    justify-content: center;
 
-    /* wygląd jak w mObywatel – szkło + lekki gradient */
+    color: var(--font);
+    background: transparent;
+    isolation: isolate;
+}
+
+.top_grid::before,
+.top_slide_bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
     background: linear-gradient(
         90deg,
-        rgba(70, 76, 86, 0.92),
-        rgba(92, 101, 113, 0.92)
+        rgba(70, 76, 86, 0.35),
+        rgba(92, 101, 113, 0.35)
     );
     backdrop-filter: blur(var(--top-bar-blur));
     -webkit-backdrop-filter: blur(var(--top-bar-blur));
-
     box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.04),
         0 10px 25px rgba(0, 0, 0, 0.35);
-
-    transform: translateY(-100%);  /* start: schowany nad ekranem */
+    transform: translateY(-100%);
     opacity: 0;
-    pointer-events: none;
-
     transition:
         transform 0.22s ease-out,
         opacity 0.18s ease-out,
@@ -289,11 +299,14 @@ p, input{
         -webkit-backdrop-filter 0.25s ease;
 }
 
-/* stan aktywny – wjeżdża z góry */
-.top-bar--active {
+.top-bar--active::before {
     transform: translateY(0);
     opacity: 1;
-    pointer-events: auto;
+    background: linear-gradient(
+        90deg,
+        rgba(70, 76, 86, 0.92),
+        rgba(92, 101, 113, 0.92)
+    );
 }
 
 /* odsuwamy content w dół kiedy pasek jest widoczny */

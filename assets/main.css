@@ -28,12 +28,18 @@ input::-webkit-inner-spin-button {
     --background2: #1f2326;
     --top-bar-height: 52px;
     --top-bar-blur: 40px;
+    --top-bar-collapsed-offset: 28px;
 }
 
 body{
     background-color: #111218;
-    padding-top: 0; /* TU ZMIANA – nie odsuwamy już całej strony w dół */
+    margin: 0;
+    padding-top: env(safe-area-inset-top);
     padding-bottom: calc(110px + env(safe-area-inset-bottom));
+}
+
+body.has-blur-topbar{
+    padding-top: calc(env(safe-area-inset-top) + var(--top-bar-collapsed-offset));
 }
 
 p, input{
@@ -245,53 +251,78 @@ p, input{
 }
 
 
-/* TOP BAR – TYLKO POZA EKRANEM LOGOWANIA (body.login-screen) */
+/* TOP BAR – GLOBALNA WERSJA Z BLUREM */
 
-body:not(.login-screen) .top_grid,
-body:not(.login-screen) .top_slide_bar {
+body.has-blur-topbar .top_grid,
+body.has-blur-topbar .top_slide_bar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 9999;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
 
-    /* pełne pokrycie z notchem */
-    padding-top: env(safe-area-inset-top);
+    padding-top: calc(env(safe-area-inset-top) + 4px);
+    padding-bottom: 12px;
+    padding-left: max(18px, env(safe-area-inset-left));
+    padding-right: max(18px, env(safe-area-inset-right));
     height: calc(var(--top-bar-height) + env(safe-area-inset-top));
 
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    color: var(--font);
+    background: transparent;
+    isolation: isolate;
+}
 
-    /* ciemny, lekko przydymiony pasek */
-    background: rgba(15, 16, 22, 0.90);
+body.has-blur-topbar .top_grid::before,
+body.has-blur-topbar .top_slide_bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba(8, 9, 13, 0.35);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.04),
+        0 12px 32px rgba(0, 0, 0, 0.50);
+    background-clip: padding-box;
     backdrop-filter: blur(var(--top-bar-blur));
     -webkit-backdrop-filter: blur(var(--top-bar-blur));
-
-    box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.03),
-        0 10px 25px rgba(0, 0, 0, 0.40);
-
-    transform: translateY(-100%);  /* start: schowany */
+    transform: translateY(-100%);
     opacity: 0;
-    pointer-events: none;
-
+    will-change: transform, opacity, backdrop-filter;
     transition:
-        transform 0.22s ease-out,
-        opacity 0.18s ease-out,
+        transform 0.25s ease,
+        opacity 0.2s ease,
         background 0.25s ease,
+        box-shadow 0.25s ease,
         backdrop-filter 0.25s ease,
         -webkit-backdrop-filter 0.25s ease;
 }
 
-/* aktywny pasek */
-body:not(.login-screen) .top-bar--active {
+body.has-blur-topbar .top-bar--active:not(.topbar-always)::before {
     transform: translateY(0);
     opacity: 1;
-    pointer-events: auto;
+    background: rgba(6, 7, 10, 0.92);
 }
 
-/* content odsuwamy tylko gdy pasek jest aktywny */
-body:not(.login-screen).body-with-top-bar {
-    padding-top: calc(var(--top-bar-height) + env(safe-area-inset-top));
+body.has-blur-topbar .topbar-always::before {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+body.has-blur-topbar .topbar-always:not(.topbar-always--solid)::before {
+    background: rgba(5, 6, 9, 0.65);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.03),
+        0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+body.has-blur-topbar .topbar-always.topbar-always--solid::before {
+    background: rgba(4, 5, 7, 0.92);
+}
+
+body.has-blur-topbar.body-with-top-bar {
+    padding-top: calc(env(safe-area-inset-top) + var(--top-bar-height));
 }
