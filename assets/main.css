@@ -28,12 +28,23 @@ input::-webkit-inner-spin-button {
     --background2: #1f2326;
     --top-bar-height: 52px;
     --top-bar-blur: 40px;
+    --top-bar-collapsed-offset: 28px;
 }
 
 body{
     background-color: #111218;
-    padding-top: 0; /* TU ZMIANA – nie odsuwamy już całej strony w dół */
+    margin: 0;
+    padding-top: env(safe-area-inset-top);
     padding-bottom: calc(110px + env(safe-area-inset-bottom));
+}
+
+body.has-blur-topbar{
+    padding-top: calc(env(safe-area-inset-top) + var(--top-bar-collapsed-offset));
+}
+
+/* Strony z wyższym blur-topbarem (np. Więcej/Usługi) podbijają wysokość przez klasę na body */
+body.top-bar-tall {
+    --top-bar-height: 60px;
 }
 
 p, input{
@@ -245,53 +256,201 @@ p, input{
 }
 
 
-/* TOP BAR – TYLKO POZA EKRANEM LOGOWANIA (body.login-screen) */
+/* TOP BAR – GLOBALNA WERSJA Z BLUREM */
 
-body:not(.login-screen) .top_grid,
-body:not(.login-screen) .top_slide_bar {
+body.has-blur-topbar .top_grid,
+body.has-blur-topbar .top_slide_bar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 9999;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
 
-    /* pełne pokrycie z notchem */
-    padding-top: env(safe-area-inset-top);
+    padding-top: calc(env(safe-area-inset-top) + 4px);
+    padding-bottom: 12px;
+    padding-left: max(18px, env(safe-area-inset-left));
+    padding-right: max(18px, env(safe-area-inset-right));
     height: calc(var(--top-bar-height) + env(safe-area-inset-top));
 
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    color: var(--font);
+    background: transparent;
+    isolation: isolate;
+}
 
-    /* ciemny, lekko przydymiony pasek */
-    background: rgba(15, 16, 22, 0.90);
+body.has-blur-topbar .top_grid::before,
+body.has-blur-topbar .top_slide_bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba(8, 9, 13, 0.35);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.04),
+        0 12px 32px rgba(0, 0, 0, 0.50);
+    background-clip: padding-box;
     backdrop-filter: blur(var(--top-bar-blur));
     -webkit-backdrop-filter: blur(var(--top-bar-blur));
-
-    box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.03),
-        0 10px 25px rgba(0, 0, 0, 0.40);
-
-    transform: translateY(-100%);  /* start: schowany */
+    transform: translateY(-100%);
     opacity: 0;
-    pointer-events: none;
-
+    will-change: transform, opacity, backdrop-filter;
     transition:
-        transform 0.22s ease-out,
-        opacity 0.18s ease-out,
+        transform 0.25s ease,
+        opacity 0.2s ease,
         background 0.25s ease,
+        box-shadow 0.25s ease,
         backdrop-filter 0.25s ease,
         -webkit-backdrop-filter 0.25s ease;
 }
 
-/* aktywny pasek */
-body:not(.login-screen) .top-bar--active {
+body.has-blur-topbar .top-bar--active:not(.topbar-always)::before {
     transform: translateY(0);
     opacity: 1;
-    pointer-events: auto;
+    background: rgba(6, 7, 10, 0.92);
 }
 
-/* content odsuwamy tylko gdy pasek jest aktywny */
-body:not(.login-screen).body-with-top-bar {
-    padding-top: calc(var(--top-bar-height) + env(safe-area-inset-top));
+body.has-blur-topbar .topbar-always::before {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+body.has-blur-topbar .topbar-always:not(.topbar-always--solid)::before {
+    background: rgba(5, 6, 9, 0.65);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.03),
+        0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+body.has-blur-topbar .topbar-always.topbar-always--solid::before {
+    background: rgba(4, 5, 7, 0.92);
+}
+
+body.has-blur-topbar.body-with-top-bar {
+    padding-top: calc(env(safe-area-inset-top) + var(--top-bar-height));
+}
+
+/* HERO nagłówki jak w Usługach/Więcej */
+.hero-header {
+    width: min(640px, calc(100% - 32px));
+    margin: 0 auto 32px;
+    padding: calc(env(safe-area-inset-top) + var(--top-bar-collapsed-offset) + 12px) 0 12px;
+    color: #ffffff;
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        max-height 0.35s ease,
+        margin-bottom 0.25s ease,
+        margin-top 0.25s ease;
+    max-height: 520px;
+    overflow: hidden;
+}
+
+body.has-blur-topbar .hero-header {
+    margin-top: calc(-1 * var(--top-bar-collapsed-offset));
+}
+
+.hero-header.hero-header--collapsed {
+    opacity: 0;
+    transform: translateY(-18px);
+    max-height: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+    pointer-events: none;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.hero-header__branding {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.hero-header__logo {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+}
+
+.hero-header__title {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.hero-header__subtitle {
+    margin: 6px 0 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.hero-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: 24px;
+    padding: 12px 18px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hero-search__icon {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.hero-search__icon::before {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.hero-search__icon::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 2px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.55);
+    bottom: 1px;
+    right: 0;
+    transform: rotate(45deg);
+    transform-origin: right center;
+}
+
+.hero-search__input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 17px;
+    color: #ffffff;
+    font-weight: 500;
+    user-select: text;
+    -webkit-user-select: text;
+    -ms-user-select: text;
+    caret-color: #4aa2fc;
+}
+
+.hero-search__input:focus {
+    outline: none;
+}
+
+.hero-search__input::placeholder {
+    color: rgba(255, 255, 255, 0.55);
 }

@@ -9,7 +9,7 @@
 }
 
 .services_action{
-    margin-top: 150px;
+    margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(2, 50%);
     width: 100%;
@@ -19,4 +19,12 @@
 .services_action .main_button{
     margin-right: 0;
     margin-left: auto;
+}
+
+.services-empty-state{
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 20px 0;
 }
