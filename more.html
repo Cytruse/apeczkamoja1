@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
 </head>
-<body class="has-blur-topbar">
+<body class="has-blur-topbar hero-layout more-screen">
 
     <div class="bottom_bar">
         <div class="bottom_bar_grid">
@@ -44,6 +44,17 @@
         <p class="main_title">Więcej</p>
         <p class="main_button" onclick="sendTo('id')">Wyloguj się</p>
     </div>
+    <header class="hero-header hero-header--more" data-hero data-hero-collapse-offset="24">
+        <div class="hero-header__row">
+            <div class="hero-header__logo">
+                <img src="./more_files/logo_large.png" alt="Godło" />
+            </div>
+            <div class="hero-header__texts">
+                <p class="hero-header__title">Więcej</p>
+                <p class="hero-header__subtitle">Twoje dane</p>
+            </div>
+        </div>
+    </header>
     <div class="container">
         <p class="title settings">Twoje dane</p>
         <div class="services_list">
@@ -127,6 +138,7 @@
     </div>
     
 
+    <script src="assets/hero.js" defer></script>
     <script src="assets/bar.js" defer></script>
     <script src="assetsdiff/manifest.js.pobrane"></script>
     <script src="assetsdiff/cache.js.pobrane"></script>

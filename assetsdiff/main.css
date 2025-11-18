@@ -33,6 +33,130 @@ body.has-blur-topbar{
     padding-top: calc(env(safe-area-inset-top) + var(--top-bar-collapsed-offset));
 }
 
+/* hero-layout + page specific body classes:
+   - body.hero-layout: enables large hero headers on Usługi/Więcej
+   - body.more-screen: slightly taller blur top bar so logo i "Wyloguj się" mieszczą się w gradientzie */
+body.hero-layout{
+    --hero-horizontal-padding-left: max(24px, env(safe-area-inset-left));
+    --hero-horizontal-padding-right: max(24px, env(safe-area-inset-right));
+}
+
+body.more-screen{
+    --top-bar-height: 60px;
+}
+
+body.hero-layout [data-hero]{
+    margin: calc(-1 * var(--top-bar-collapsed-offset)) auto 12px;
+    padding-top: calc(env(safe-area-inset-top) + var(--top-bar-collapsed-offset) + 18px);
+    padding-bottom: 24px;
+    padding-left: var(--hero-horizontal-padding-left);
+    padding-right: var(--hero-horizontal-padding-right);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: var(--background);
+    transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease, padding 0.35s ease, margin 0.35s ease;
+    max-height: 320px;
+    overflow: hidden;
+    width: var(--width);
+    box-sizing: border-box;
+}
+
+.hero-header__logo img{
+    width: 48px;
+    height: 48px;
+}
+
+.hero-header__texts{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.hero-header__row{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.hero-header__logo{
+    display: flex;
+    align-items: center;
+}
+
+.hero-header__title{
+    margin: 0;
+    font-size: 34px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.hero-header__subtitle{
+    margin: 0;
+    font-size: 17px;
+    color: #99a1b0;
+}
+
+.hero-header{
+    width: 100%;
+}
+
+.hero-header--services{
+    gap: 18px;
+}
+
+.hero-header--collapsed{
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    transform: translateY(-12px);
+}
+
+.hero-search{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    background: #1c1f24;
+    border-radius: 24px;
+    color: #939aab;
+}
+
+.hero-search__icon svg{
+    width: 20px;
+    height: 20px;
+}
+
+.hero-search input{
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    user-select: text;
+}
+
+.hero-search input::placeholder{
+    color: #aeb4c2;
+}
+
+.search-empty{
+    display: none;
+    margin: 4px auto 0;
+    width: var(--width);
+    color: #8f96a7;
+    font-size: 15px;
+}
+
+.search-empty--visible{
+    display: block;
+}
+
 *{
     font-family: "Poppins", sans-serif;
     -webkit-user-select: none;
