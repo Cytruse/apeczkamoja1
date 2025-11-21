@@ -71,17 +71,22 @@ body.hero-layout [data-hero]{
     display: flex;
     flex-direction: column;
     gap: 6px;
+    align-items: center;
+    text-align: center;
 }
 
 .hero-header__row{
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+    text-align: center;
 }
 
 .hero-header__logo{
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .hero-header__title{
@@ -215,6 +220,19 @@ body.has-blur-topbar .top_slide_bar {
     color: white;
     background: transparent;
     isolation: isolate;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-12px);
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+body.has-blur-topbar .top-bar--active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
 }
 
 body.has-blur-topbar .top_grid::before,
