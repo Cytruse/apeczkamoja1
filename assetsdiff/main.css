@@ -110,6 +110,23 @@ body.hero-layout [data-hero]{
     gap: 18px;
 }
 
+.hero-header--services .hero-header__row,
+.hero-header--more .hero-header__row{
+    align-items: flex-start;
+    text-align: left;
+}
+
+.hero-header--services .hero-header__texts,
+.hero-header--more .hero-header__texts{
+    align-items: flex-start;
+    text-align: left;
+}
+
+.hero-header--services .hero-header__logo,
+.hero-header--more .hero-header__logo{
+    justify-content: flex-start;
+}
+
 .hero-header--collapsed{
     max-height: 0;
     opacity: 0;
