@@ -65,8 +65,26 @@ function initTopBarEffects() {
     const ALWAYS_SOLID_CLASS = "topbar-always--solid";
     const alwaysVisible = bar.classList.contains("topbar-always");
 
+    const hero = document.querySelector("[data-hero]");
+    const rootStyles = getComputedStyle(document.documentElement);
+    const topBarHeight = parseFloat(rootStyles.getPropertyValue("--top-bar-height")) || 52;
+    let showThreshold = SHOW_OFFSET;
+
+    function recalcThreshold() {
+        if (hero) {
+            const rect = hero.getBoundingClientRect();
+            const heroTop = rect.top + window.scrollY;
+            showThreshold = Math.max(SHOW_OFFSET, heroTop + rect.height - topBarHeight);
+        } else {
+            showThreshold = SHOW_OFFSET;
+        }
+    }
+
+    recalcThreshold();
+    window.addEventListener("resize", recalcThreshold, { passive: true });
+
     function updateTopBar() {
-        const shouldShow = alwaysVisible || window.scrollY > SHOW_OFFSET;
+        const shouldShow = alwaysVisible || window.scrollY > showThreshold;
 
         if (shouldShow) {
             bar.classList.add("top-bar--active");
